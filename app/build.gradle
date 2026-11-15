@@ -1,0 +1,56 @@
+plugins {
+    id 'com.android.application'
+}
+
+def buildNumber = Integer.parseInt((project.findProperty('versionCode') ?: '1').toString())
+
+android {
+    namespace 'io.github.ahassan07.carvideo'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'io.github.ahassan07.carvideo'
+        minSdk 26
+        targetSdk 34
+        versionCode buildNumber
+        versionName "1.0.${buildNumber}"
+    }
+
+    // The key is committed on purpose so every build has the same signature and
+    // new versions install over old ones. It protects nothing; do not reuse it.
+    signingConfigs {
+        shared {
+            storeFile file('carvideo.keystore')
+            storePassword 'carvideo'
+            keyAlias 'carvideo'
+            keyPassword 'carvideo'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.shared
+        }
+        debug {
+            signingConfig signingConfigs.shared
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    lint {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation platform('org.jetbrains.kotlin:kotlin-bom:1.9.24')
+    implementation 'androidx.annotation:annotation:1.9.1'
+    implementation 'androidx.car.app:app:1.7.0'
+    implementation 'androidx.car.app:app-projected:1.7.0'
+}

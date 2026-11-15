@@ -1,72 +1,54 @@
-## !!!Be aware of scam!!! The sites like https :// fermata-auto . com  are 100% scam. This app is free and opensource!
+# Car Video
 
+A small Android app that shows a web browser on the Android Auto screen, with YouTube as the
+home page. It is a personal, sideloaded app and is not on the Play Store.
 
-## Fermata Media Player
-[![Download the latest APK](https://img.shields.io/github/v/release/AndreyPavlenko/Fermata?label=Download%20APK&logo=github&style=for-the-badge)](https://github.com/AndreyPavlenko/Fermata/releases/latest)
+**Status: builds on GitHub, not yet tested on a real car screen.**
 
-## About
-Fermata Media Player is a free, open source audio, video and TV player with a simple and intuitive interface. It is focused on playing media files organized in folders and playlists.
+## Install
 
-Supported features:
+1. Open the [latest release](../../releases/latest) on your phone and download `CarVideo.apk`.
+2. Install it (allow your browser to install unknown apps when asked) and open it once.
+3. Tap **Allow speed detection** and accept the prompts.
+4. In Android Auto settings, tap **Version** about ten times to unlock developer mode, then open
+   the three-dot menu, choose **Developer settings** and turn on **Unknown sources**.
+5. Connect to the car and open **Car Video** from the app list on the car screen.
 
-* Play media files organized in folders
-* IPTV addon with support for XMLTV EPG and Catchup
-* Remembers the last played track and position for each folder
-* Support for favorites and playlists
-* Support for CUE and M3U playlists
-* Support for bookmarks
-* Audio effects: Equalizer, Bass/Volume Boost and Virtualizer
-* Configure audio effects for individual tracks and folders
-* Configure playback speed for individual tracks and folders
-* Customizable titles and subtitles
-* Support for Android Auto
-* Support for Android TV
-* Show favorites and playlists on Android TV home screen
-* Pluggable media engines: MediaPlayer, ExoPlayer and VLC
-* Video player with support for subtitles and audio streams (VLC Engine only)
+## Using it
 
-## Building the project
-* Download and install the latest Android SDK or Android Studio from https://developer.android.com/studio/
-* Set the environment variable ANDROID_SDK_ROOT pointing to the SDK directory
-```bash
-export ANDROID_SDK_ROOT=<path to android SDK>
-```
+Buttons on the car screen:
 
-### Clone the repository
-```bash
-git clone --recurse-submodules https://github.com/AndreyPavlenko/Fermata.git
-cd Fermata
-```
+| Button | What it does |
+| --- | --- |
+| Arrow | Back (also leaves fullscreen video) |
+| Star | Saved sites |
+| Magnifier | Search YouTube or type a web address (car keyboard, parked only) |
+| Circular arrow | Reload |
+| Up / down | Scroll one page |
 
-### Build AAB
-```bash
-./gradlew bundleAutoRelease -PAPP_ID_SFX=.type.your.pkg.sfx.here
-find $PWD -name *.aab
-```
+Tap and drag on the page as usual. Typing inside a web page is not possible on the car screen;
+use the search button, or type on the phone and tap **Send to car**.
 
-### Build APK
-```bash
-./gradlew bundleAutoRelease -PAPP_ID_SFX=.type.your.pkg.sfx.here
-find $PWD -name *.apk
-```
+To sign in to a site, use **Open on phone** in the phone app. Sign-ins are shared with the car
+screen. Google sign-in does not work in embedded browsers, so YouTube runs signed out.
 
-### Building in docker
-```bash
-docker run -ti --name Fermata andreypavlenko/fermata
-```
-Enter the requested key alias and password, when prompted.
-Build the required package using the above commands.
-To copy the built package to the host machine, open a new terminal and run:
-```bash
-docker cp Fermata:/home/mobiledevops/Fermata/fermata/build/outputs/bundle/autoRelease/ .
-```
+## Limits
 
+- **Moving car:** the picture is covered while the car moves and sound keeps playing. This uses
+  the car's speed reading, or the phone's GPS if the car does not report speed. If neither is
+  available the app cannot tell and does not cover the picture. Do not watch while driving.
+- **Netflix and similar services** use copy protection that does not play in this kind of browser.
+- **Touch input:** Android Auto passes only taps and scroll distances to apps, so pinch-zoom,
+  long-press and sideways swipes inside the page do not work.
+- Android Auto may hide sideloaded apps on some phone and Android versions.
 
-## Donation
-If you like the application, please consider making a donation:
+## How it works
 
-[PayPal](https://www.paypal.com/donate/?hosted_button_id=NP5Q3YDSCJ98N)
+Android Auto only gives a drawing surface to map-style templates. The app registers as a
+navigation-category Car App Library app, wraps that surface in a virtual display, and shows a
+`WebView` on it. Source is in `app/src/main/java`.
 
-[CloudTips](https://pay.cloudtips.ru/p/a03a73da)
+## Build
 
-[Yandex Money](https://money.yandex.ru/to/410014661137336)
+Every push to `main` builds the APK with GitHub Actions and publishes it as a release.
+Locally: `./gradlew assembleRelease` (needs the Android SDK).

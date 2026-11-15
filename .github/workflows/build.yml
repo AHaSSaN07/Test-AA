@@ -1,0 +1,56 @@
+name: Build APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Build
+        run: |
+          set -o pipefail
+          chmod +x gradlew
+          ./gradlew --no-daemon --stacktrace assembleRelease -PversionCode=${{ github.run_number }} 2>&1 | tee build.log
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp app/build/outputs/apk/release/app-release.apk CarVideo.apk
+          gh release create "v1.0.${{ github.run_number }}" CarVideo.apk \
+            --repo "${{ github.repository }}" \
+            --target "${{ github.sha }}" \
+            --title "Car Video 1.0.${{ github.run_number }}" \
+            --notes "Download CarVideo.apk and install it on your phone. Setup steps are in the README."
+
+      # Keeps the latest build log on the ci-logs branch so failures are easy to read.
+      - name: Save build log
+        if: always()
+        run: |
+          mkdir -p /tmp/ci-log
+          cp build.log /tmp/ci-log/build.log 2>/dev/null || echo "no build log" > /tmp/ci-log/build.log
+          echo "status=${{ job.status }} run=${{ github.run_number }} sha=${{ github.sha }}" > /tmp/ci-log/status.txt
+          cd /tmp/ci-log
+          git init -q -b ci-logs
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add .
+          git commit -q -m "Build log for run ${{ github.run_number }} (${{ job.status }})"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" ci-logs

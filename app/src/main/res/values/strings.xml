@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Car Video</string>
+    <string name="phone_browser_title">Car Video browser</string>
+
+    <string name="intro">Shows YouTube and other video sites on your Android Auto screen. Video is covered while the car is moving; sound keeps playing.</string>
+
+    <string name="send_label">Open on the car screen now</string>
+    <string name="send_hint">Search words or a web address</string>
+    <string name="send_button">Send to car</string>
+    <string name="phone_button">Open on phone (to sign in)</string>
+
+    <string name="home_label">Home page</string>
+    <string name="sites_label">Extra sites, one address per line</string>
+    <string name="sites_hint">vimeo.com\ntwitch.tv</string>
+
+    <string name="scale_label">Size on the car screen</string>
+    <string name="scale_small">Small</string>
+    <string name="scale_medium">Medium</string>
+    <string name="scale_large">Large</string>
+
+    <string name="save_button">Save settings</string>
+    <string name="perm_button">Allow speed detection</string>
+
+    <string name="saved">Saved. Changes apply the next time the car screen opens.</string>
+    <string name="sent">Sent to the car screen.</string>
+    <string name="not_connected">The car screen is not open. Start Car Video in Android Auto first.</string>
+    <string name="nothing_to_open">Type search words or a web address first.</string>
+
+    <string name="status_connected">Car screen: open</string>
+    <string name="status_disconnected">Car screen: not open</string>
+    <string name="status_speed_yes">Car speed access: allowed</string>
+    <string name="status_speed_no">Car speed access: not allowed</string>
+    <string name="status_gps_yes">Phone location (speed fallback): allowed</string>
+    <string name="status_gps_no">Phone location (speed fallback): not allowed</string>
+
+    <string name="setup_title">Setup in Android Auto</string>
+    <string name="setup_steps">1. Open Android Auto settings on the phone.\n2. Scroll to Version and tap it about ten times to unlock developer mode.\n3. Open the three-dot menu, choose Developer settings and turn on Unknown sources.\n4. Tap Allow speed detection above and accept the prompts.\n5. Connect to the car. Car Video appears in the app list on the car screen. If it is missing, open Customise launcher in Android Auto settings and tick it.</string>
+
+    <string name="car_lock_message">Video is hidden while the car is moving.\nSound keeps playing.</string>
+    <string name="car_search_hint">Search YouTube or type a web address</string>
+    <string name="car_sites_title">Sites</string>
+    <string name="car_home_row">Home page</string>
+</resources>
